@@ -3,542 +3,705 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crystal Clicker — Precision Combat Automation</title>
+<title>Crystal Clicker — Advanced Input Optimization Tool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:        #090909;
-    --surface:   #0f0f0f;
-    --surface-2: #161616;
-    --border:    rgba(255,255,255,0.07);
-    --border-hi: rgba(255,255,255,0.13);
-    --text:      #eeebe5;
-    --text-mid:  #7a7870;
-    --text-dim:  #353530;
-    --accent:    #b8d0e0;
-    --accent-lo: rgba(184,208,224,0.07);
-    --accent-md: rgba(184,208,224,0.14);
-    --gold:      #d4a853;
-    --gold-lo:   rgba(212,168,83,0.08);
-  }
+:root {
+  --bg:        #090909;
+  --surface:   #0f0f0f;
+  --surface-2: #161616;
+  --border:    rgba(255,255,255,0.07);
+  --border-hi: rgba(255,255,255,0.13);
+  --text:      #eeebe5;
+  --text-mid:  #7a7870;
+  --text-dim:  #353530;
+  --accent:    #b8d0e0;
+  --accent-lo: rgba(184,208,224,0.07);
+  --accent-md: rgba(184,208,224,0.14);
+  --gold:      #d4a853;
+  --gold-lo:   rgba(212,168,83,0.09);
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 17px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-  /* grain */
-  body::after {
-    content: '';
-    position: fixed; inset: 0; pointer-events: none; z-index: 9990;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.028'/%3E%3C/svg%3E");
-    opacity: .5;
-  }
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9990;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.028'/%3E%3C/svg%3E");
+  opacity: .5;
+}
 
-  /* ── PARTICLE CANVAS ── */
-  #particles {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  }
+#particles {
+  position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+}
 
-  ::-webkit-scrollbar { width: 3px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: #242424; border-radius: 2px; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #242424; border-radius: 2px; }
 
-  /* ==============================
-     NAV
-  ============================== */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 3rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(9,9,9,0.94);
-    backdrop-filter: blur(22px);
-  }
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(9,9,9,0.95);
+  backdrop-filter: blur(22px);
+}
 
-  .nav-logo {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 1rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text);
-  }
-  .nav-logo em { color: var(--text-mid); font-style: normal; font-weight: 400; }
+.nav-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 1rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text);
+}
+.nav-logo em { color: var(--text-mid); font-style: normal; font-weight: 400; }
 
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-  .nav-links a {
-    color: var(--text-mid); text-decoration: none;
-    font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
-    font-weight: 500; transition: color .25s;
-  }
-  .nav-links a:hover { color: var(--text); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+.nav-links a {
+  color: var(--text-mid); text-decoration: none;
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 500; transition: color .25s;
+}
+.nav-links a:hover { color: var(--text); }
 
-  .nav-right { display: flex; gap: .9rem; align-items: center; }
+.nav-right { display: flex; gap: .9rem; align-items: center; }
 
-  /* Discord icon */
-  .discord-link {
-    display: flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px;
-    border: 1px solid var(--border);
-    color: var(--text-mid); text-decoration: none;
-    transition: color .25s, border-color .25s, background .25s;
-    flex-shrink: 0;
-  }
-  .discord-link:hover { color: #7289da; border-color: rgba(114,137,218,0.35); background: rgba(114,137,218,0.06); }
-  .discord-link svg { width: 16px; height: 16px; }
+.discord-link {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  color: var(--text-mid); text-decoration: none;
+  transition: color .25s, border-color .25s, background .25s;
+}
+.discord-link:hover { color: #7289da; border-color: rgba(114,137,218,.35); background: rgba(114,137,218,.06); }
+.discord-link svg { width: 16px; height: 16px; }
 
-  /* Language toggle */
-  .lang-toggle {
-    display: flex; border: 1px solid var(--border); overflow: hidden;
-    font-family: 'Syne Mono', monospace; font-size: .62rem; letter-spacing: .1em;
-  }
-  .lang-btn {
-    padding: .36rem .72rem; background: transparent; border: none;
-    color: var(--text-dim); cursor: pointer; transition: all .2s;
-    text-transform: uppercase;
-  }
-  .lang-btn.active { background: var(--text); color: var(--bg); }
-  .lang-btn:not(.active):hover { color: var(--text); }
+.lang-toggle {
+  display: flex; border: 1px solid var(--border); overflow: hidden;
+  font-family: 'Syne Mono', monospace; font-size: .62rem; letter-spacing: .1em;
+}
+.lang-btn {
+  padding: .36rem .72rem; background: transparent; border: none;
+  color: var(--text-dim); cursor: pointer; transition: all .2s; text-transform: uppercase;
+}
+.lang-btn.active { background: var(--text); color: var(--bg); }
+.lang-btn:not(.active):hover { color: var(--text); }
 
-  .nav-cta {
-    font-family: 'Syne', sans-serif; font-size: .72rem;
-    font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-    background: var(--text); color: var(--bg); border: none;
-    padding: .5rem 1.4rem; cursor: pointer; transition: opacity .25s, transform .2s;
-  }
-  .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+.nav-cta {
+  font-family: 'Syne', sans-serif; font-size: .72rem;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  background: var(--text); color: var(--bg); border: none;
+  padding: .5rem 1.4rem; cursor: pointer; transition: opacity .25s, transform .2s;
+}
+.nav-cta:hover { opacity: .85; transform: translateY(-1px); }
 
-  /* ==============================
-     HERO
-  ============================== */
-  .hero {
-    min-height: 100svh; display: grid; place-items: center;
-    text-align: center; padding: 9rem 2rem 6rem;
-    position: relative; border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
 
-  .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 62px 62px;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 10%, transparent 100%);
-    pointer-events: none;
-    animation: gridIn 1.4s ease both;
-  }
-  @keyframes gridIn { from { opacity: 0; } to { opacity: 1; } }
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='62'%3E%3Cpath d='M62 0H0v62' fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 62px 62px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 10%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 10%, transparent 100%);
+  animation: gridIn 1.4s ease both;
+}
+@keyframes gridIn { from { opacity: 0; } to { opacity: 1; } }
 
-  .hero-inner { position: relative; z-index: 1; max-width: 880px; }
+.hero-inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 1200px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
 
-  .hero-overline {
-    font-family: 'Syne Mono', monospace; font-size: .65rem;
-    letter-spacing: .22em; text-transform: uppercase; color: var(--text-mid);
-    margin-bottom: 2.2rem;
-    display: flex; align-items: center; justify-content: center; gap: 1rem;
-    opacity: 0; animation: fadeUp .8s .1s ease forwards;
-  }
-  .hero-overline::before, .hero-overline::after {
-    content: ''; display: block; width: 34px; height: 1px; background: var(--border-hi);
-  }
+.hero-overline {
+  font-family: 'Syne Mono', monospace; font-size: .65rem;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--text-mid);
+  margin-bottom: 2.2rem;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  opacity: 0; animation: fadeUp .8s .1s ease forwards;
+}
+.hero-overline::before, .hero-overline::after {
+  content: ''; display: block; width: 34px; height: 1px; background: var(--border-hi);
+}
 
-  .hero-title {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: clamp(3.8rem, 11vw, 9rem);
-    line-height: .92; letter-spacing: -.02em; color: var(--text);
-    margin-bottom: 1.6rem;
-    opacity: 0; animation: fadeUp .9s .22s ease forwards;
-  }
-  .hero-title .hollow {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.13);
-  }
+.hero-title {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(3.6rem, 11vw, 9rem);
+  line-height: .92;
+  letter-spacing: 0;
+  color: var(--text);
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 1.6rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0; animation: fadeUp .9s .22s ease forwards;
+}
 
-  .hero-sub {
-    max-width: 490px; margin: 0 auto 2.8rem;
-    color: var(--text-mid); font-weight: 300; font-size: 1rem; line-height: 1.8;
-    opacity: 0; animation: fadeUp .8s .4s ease forwards;
-  }
+.title-line {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+.hollow {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.13);
+}
 
-  .hero-btns {
-    display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap;
-    opacity: 0; animation: fadeUp .8s .55s ease forwards;
-  }
+.hero-sub {
+  max-width: 490px; margin: 0 auto 2.8rem;
+  color: var(--text-mid); font-weight: 300; font-size: 1rem; line-height: 1.8;
+  text-align: center;
+  opacity: 0; animation: fadeUp .8s .4s ease forwards;
+}
 
-  .btn-primary {
-    font-family: 'Syne', sans-serif; font-weight: 700;
-    font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-    background: var(--text); color: var(--bg); border: none;
-    padding: .9rem 2.4rem; cursor: pointer;
-    transition: opacity .25s, transform .2s, box-shadow .3s;
-    position: relative; overflow: hidden;
-  }
-  .btn-primary:hover { opacity: .87; transform: translateY(-2px); box-shadow: 0 14px 32px rgba(0,0,0,.45); }
-  .btn-primary::after {
-    content: ''; position: absolute; top: -50%; left: -70%;
-    width: 40%; height: 200%; background: rgba(255,255,255,0.14);
-    transform: skewX(-18deg); transition: left .5s;
-  }
-  .btn-primary:hover::after { left: 140%; }
+.hero-btns {
+  display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .55s ease forwards;
+}
 
-  .btn-ghost {
-    font-family: 'Syne', sans-serif; font-weight: 700;
-    font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-    background: transparent; color: var(--text-mid);
-    border: 1px solid var(--border); padding: .9rem 2.4rem; cursor: pointer;
-    transition: color .25s, border-color .25s, background .25s;
-  }
-  .btn-ghost:hover { color: var(--text); border-color: var(--border-hi); background: rgba(255,255,255,0.02); }
+.btn-primary {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--text); color: var(--bg); border: none;
+  padding: .9rem 2.4rem; cursor: pointer;
+  transition: opacity .25s, transform .2s, box-shadow .3s;
+  position: relative; overflow: hidden;
+}
+.btn-primary:hover { opacity: .87; transform: translateY(-2px); box-shadow: 0 14px 32px rgba(0,0,0,.45); }
+.btn-primary::after {
+  content: ''; position: absolute; top: -50%; left: -70%;
+  width: 40%; height: 200%; background: rgba(255,255,255,.14);
+  transform: skewX(-18deg); transition: left .5s;
+}
+.btn-primary:hover::after { left: 140%; }
 
-  .stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    max-width: 520px; margin: 4.5rem auto 0;
-    border: 1px solid var(--border);
-    opacity: 0; animation: fadeUp .8s .7s ease forwards;
-  }
-  .stat { padding: 1.4rem 1rem; text-align: center; border-right: 1px solid var(--border); }
-  .stat:last-child { border-right: none; }
-  .stat-val {
-    font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800;
-    color: var(--text); display: block; letter-spacing: -.02em;
-  }
-  .stat-key {
-    font-family: 'Syne Mono', monospace; font-size: .6rem;
-    letter-spacing: .14em; text-transform: uppercase;
-    color: var(--text-dim); display: block; margin-top: .1rem;
-  }
+.btn-ghost {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  background: transparent; color: var(--text-mid);
+  border: 1px solid var(--border); padding: .9rem 2.4rem; cursor: pointer;
+  transition: color .25s, border-color .25s, background .25s;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border-hi); background: rgba(255,255,255,.02); }
 
-  /* ==============================
-     COMMONS
-  ============================== */
-  section { padding: 7rem 2rem; position: relative; z-index: 1; }
-  .container { max-width: 1060px; margin: 0 auto; }
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  max-width: 520px; width: 100%; margin: 4.5rem auto 0;
+  border: 1px solid var(--border);
+  opacity: 0; animation: fadeUp .8s .7s ease forwards;
+}
+.stat { padding: 1.4rem 1rem; text-align: center; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-val {
+  font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800;
+  color: var(--text); display: block; letter-spacing: -.02em;
+}
+.stat-key {
+  font-family: 'Syne Mono', monospace; font-size: .6rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text-dim); display: block; margin-top: .1rem;
+}
 
-  .section-tag {
-    font-family: 'Syne Mono', monospace; font-size: .62rem;
-    letter-spacing: .2em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 1rem; display: block;
-  }
-  .section-title {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    line-height: 1.05; letter-spacing: -.025em; color: var(--text);
-    margin-bottom: .8rem;
-  }
-  .section-desc { color: var(--text-mid); font-weight: 300; max-width: 480px; line-height: 1.78; }
+section { padding: 7rem 2rem; position: relative; z-index: 1; }
+.container { max-width: 1060px; margin: 0 auto; }
 
-  /* ==============================
-     FEATURES
-  ============================== */
-  #features { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-tag {
+  font-family: 'Syne Mono', monospace; font-size: .62rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 1rem; display: block;
+}
+.section-title {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.05; letter-spacing: -.025em; color: var(--text); margin-bottom: .8rem;
+}
+.section-desc { color: var(--text-mid); font-weight: 300; max-width: 480px; line-height: 1.78; }
 
-  .features-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap;
-  }
+#features { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-  .features-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
-    gap: 1px; background: var(--border); border: 1px solid var(--border);
-  }
+.features-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap;
+}
 
-  .fcard {
-    background: var(--surface); padding: 2.4rem 2.5rem;
-    position: relative; overflow: hidden; cursor: default;
-    opacity: 0; transform: translateY(18px);
-    transition: opacity .55s, transform .55s, background .3s;
-  }
-  .fcard.visible { opacity: 1; transform: none; }
-  .fcard:hover { background: var(--surface-2); }
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
 
-  .fcard::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-    transform: scaleY(0); transform-origin: center;
-    transition: transform .4s cubic-bezier(.25,.46,.45,.94);
-  }
-  .fcard:hover::before { transform: scaleY(1); }
+.fcard {
+  background: var(--surface); padding: 2.4rem 2.5rem;
+  position: relative; overflow: hidden; cursor: default;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .55s, transform .55s, background .3s;
+}
+.fcard.visible { opacity: 1; transform: none; }
+.fcard:hover { background: var(--surface-2); }
+.fcard::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  transform: scaleY(0); transform-origin: center;
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.fcard:hover::before { transform: scaleY(1); }
 
-  .fcard-bg-num {
-    position: absolute; bottom: .6rem; right: 1.2rem;
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 5.5rem;
-    color: rgba(255,255,255,0.022); line-height: 1; pointer-events: none;
-    transition: color .3s;
-  }
-  .fcard:hover .fcard-bg-num { color: rgba(184,208,224,0.04); }
+.fcard-bg-num {
+  position: absolute; bottom: .6rem; right: 1.2rem;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 5.5rem;
+  color: rgba(255,255,255,.022); line-height: 1; pointer-events: none;
+  transition: color .3s;
+}
+.fcard:hover .fcard-bg-num { color: rgba(184,208,224,.04); }
 
-  .fcard-num {
-    font-family: 'Syne Mono', monospace; font-size: .6rem;
-    color: var(--text-dim); letter-spacing: .14em; margin-bottom: 1.4rem;
-  }
-  .fcard-tag {
-    display: inline-block; font-family: 'Syne Mono', monospace;
-    font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent); border: 1px solid rgba(184,208,224,0.18);
-    padding: .16rem .52rem; margin-bottom: .85rem; background: var(--accent-lo);
-  }
-  .fcard-name {
-    font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
-    letter-spacing: .03em; color: var(--text); margin-bottom: .85rem;
-  }
-  .fcard-desc { color: var(--text-mid); font-size: .9rem; line-height: 1.73; font-weight: 300; }
+.fcard-num {
+  font-family: 'Syne Mono', monospace; font-size: .6rem;
+  color: var(--text-dim); letter-spacing: .14em; margin-bottom: 1.4rem;
+}
+.fcard-tag {
+  display: inline-block; font-family: 'Syne Mono', monospace;
+  font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid rgba(184,208,224,.18);
+  padding: .16rem .52rem; margin-bottom: .85rem; background: var(--accent-lo);
+}
+.fcard-name {
+  font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
+  letter-spacing: .03em; color: var(--text); margin-bottom: .85rem;
+}
+.fcard-desc { color: var(--text-mid); font-size: .9rem; line-height: 1.73; font-weight: 300; }
 
-  /* ==============================
-     VIDEO
-  ============================== */
-  #video { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#video { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-  .video-header { text-align: center; margin-bottom: 3rem; }
-  .video-header .section-desc { margin: .5rem auto 0; }
+.video-header { text-align: center; margin-bottom: 3rem; }
+.video-header .section-desc { margin: .5rem auto 0; }
 
-  .video-wrap {
-    max-width: 860px; margin: 0 auto;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    position: relative;
-    aspect-ratio: 16/9;
-    background: #000;
-  }
-  .video-wrap iframe {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    border: none;
-  }
+.video-wrap {
+  max-width: 860px; margin: 0 auto;
+  border: 1px solid var(--border); overflow: hidden;
+  position: relative; aspect-ratio: 16/9; background: #000;
+}
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
-  /* ==============================
-     HOW IT WORKS
-  ============================== */
-  #howto { }
+.howto-intro {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+}
 
-  .howto-intro {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
-  }
+.steps { margin-top: 2.5rem; }
 
-  .steps { margin-top: 2.5rem; }
+.step {
+  display: grid; grid-template-columns: 40px 1fr; gap: 1.2rem;
+  align-items: start; padding: 1.7rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0; transform: translateX(-14px);
+  transition: opacity .5s, transform .5s;
+}
+.step:first-child { border-top: 1px solid var(--border); }
+.step.visible { opacity: 1; transform: none; }
 
-  .step {
-    display: grid; grid-template-columns: 40px 1fr; gap: 1.2rem;
-    align-items: start; padding: 1.7rem 0;
-    border-bottom: 1px solid var(--border);
-    opacity: 0; transform: translateX(-14px);
-    transition: opacity .5s, transform .5s;
-  }
-  .step:first-child { border-top: 1px solid var(--border); }
-  .step.visible { opacity: 1; transform: none; }
+.step-num {
+  font-family: 'Syne Mono', monospace; font-size: .68rem;
+  color: var(--text-dim); padding-top: .25rem; letter-spacing: .06em;
+}
+.step h3 {
+  font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700;
+  letter-spacing: .04em; color: var(--text); margin-bottom: .3rem;
+}
+.step p { color: var(--text-mid); font-size: .9rem; font-weight: 300; line-height: 1.68; }
 
-  .step-num {
-    font-family: 'Syne Mono', monospace; font-size: .68rem;
-    color: var(--text-dim); padding-top: .25rem; letter-spacing: .06em;
-  }
-  .step h3 {
-    font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700;
-    letter-spacing: .04em; color: var(--text); margin-bottom: .3rem;
-  }
-  .step p { color: var(--text-mid); font-size: .9rem; font-weight: 300; line-height: 1.68; }
+.howto-visual {
+  border: 1px solid var(--border); padding: 2.2rem;
+  display: flex; flex-direction: column; gap: 1.2rem;
+}
+.hv-item {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s, transform .5s;
+}
+.hv-item.visible { opacity: 1; transform: none; }
+.hv-icon {
+  flex-shrink: 0; width: 34px; height: 34px;
+  border: 1px solid var(--border); display: flex;
+  align-items: center; justify-content: center; background: var(--bg);
+}
+.hv-icon svg { width: 15px; height: 15px; }
+.hv-label {
+  font-family: 'Syne Mono', monospace; font-size: .6rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: .22rem;
+}
+.hv-text { font-size: .88rem; color: var(--text-mid); font-weight: 300; line-height: 1.6; }
 
-  /* Side visual */
-  .howto-side { padding-top: .5rem; }
-  .howto-visual {
-    border: 1px solid var(--border); padding: 2.2rem;
-    display: flex; flex-direction: column; gap: 1.2rem;
-  }
-  .hv-item {
-    display: flex; gap: 1.1rem; align-items: flex-start;
-    opacity: 0; transform: translateY(10px);
-    transition: opacity .5s, transform .5s;
-  }
-  .hv-item.visible { opacity: 1; transform: none; }
-  .hv-icon {
-    flex-shrink: 0; width: 34px; height: 34px;
-    border: 1px solid var(--border); display: flex;
-    align-items: center; justify-content: center; background: var(--bg);
-  }
-  .hv-icon svg { width: 15px; height: 15px; }
-  .hv-label {
-    font-family: 'Syne Mono', monospace; font-size: .6rem;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: .22rem;
-  }
-  .hv-text { font-size: .88rem; color: var(--text-mid); font-weight: 300; line-height: 1.6; }
+#pricing { border-top: 1px solid var(--border); }
 
-  /* ==============================
-     PRICING
-  ============================== */
-  #pricing { border-top: 1px solid var(--border); }
+.pricing-header { text-align: center; margin-bottom: 4rem; }
+.pricing-header .section-tag { display: block; text-align: center; }
+.pricing-header .section-desc { margin: .5rem auto 0; }
 
-  .pricing-header { text-align: center; margin-bottom: 4rem; }
-  .pricing-header .section-tag { display: block; text-align: center; }
-  .pricing-header .section-desc { margin: .5rem auto 0; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem; max-width: 780px; margin: 0 auto;
+}
 
-  .pricing-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem; max-width: 780px; margin: 0 auto;
-  }
+.pcard {
+  background: var(--surface); border: 1px solid var(--border);
+  overflow: hidden; position: relative;
+  transition: transform .35s, border-color .35s, box-shadow .35s;
+}
+.pcard:hover { transform: translateY(-5px); border-color: var(--border-hi); }
 
-  /* ── Monthly card ── */
-  .pcard {
-    background: var(--surface); border: 1px solid var(--border);
-    overflow: hidden;
-    transition: transform .35s, border-color .35s, box-shadow .35s;
-    position: relative;
-  }
-  .pcard:hover { transform: translateY(-5px); border-color: var(--border-hi); }
+.pcard.featured {
+  border-color: rgba(184,208,224,.18);
+  transition: transform .4s cubic-bezier(.22,.68,0,1.2), border-color .35s, box-shadow .4s, background .35s;
+}
+.pcard.featured:hover {
+  transform: translateY(-12px) scale(1.015);
+  border-color: rgba(184,208,224,.5);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.55),
+    0 0 0 1px rgba(184,208,224,.25),
+    0 0 50px rgba(184,208,224,.07);
+  background: #111a20;
+}
+.pcard.featured::after {
+  content: ''; position: absolute; inset: -1px;
+  border: 1px solid rgba(184,208,224,0);
+  pointer-events: none; transition: border-color .4s;
+}
+.pcard.featured:hover::after { border-color: rgba(184,208,224,.3); }
 
-  /* ── Annual / Featured card ── */
-  .pcard.featured {
-    border-color: rgba(184,208,224,0.18);
-    transition: transform .4s cubic-bezier(.22,.68,0,1.2), border-color .35s, box-shadow .4s, background .35s;
-  }
-  .pcard.featured:hover {
-    transform: translateY(-12px) scale(1.015);
-    border-color: rgba(184,208,224,0.5);
-    box-shadow:
-      0 30px 60px rgba(0,0,0,.55),
-      0 0 0 1px rgba(184,208,224,0.25),
-      0 0 50px rgba(184,208,224,0.07);
-    background: #121a20;
-  }
+.pcard-stripe { height: 2px; background: var(--border); }
+.pcard.featured .pcard-stripe { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
 
-  /* Glow ring on featured hover */
-  .pcard.featured::after {
-    content: ''; position: absolute; inset: -1px;
-    border: 1px solid rgba(184,208,224,0);
-    pointer-events: none;
-    transition: border-color .4s;
-  }
-  .pcard.featured:hover::after { border-color: rgba(184,208,224,0.3); }
+.pcard-body { padding: 2.2rem 2.4rem; }
 
-  .pcard-stripe { height: 2px; background: var(--border); }
-  .pcard.featured .pcard-stripe { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.pcard-label {
+  font-family: 'Syne Mono', monospace; font-size: .6rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 1.4rem; display: block;
+}
+.pcard.featured .pcard-label { color: var(--accent); }
 
-  .pcard-body { padding: 2.2rem 2.4rem; }
+.pcard-price { display: flex; align-items: baseline; gap: .2rem; margin-bottom: .3rem; }
+.pcard-cur {
+  font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
+  color: var(--text-mid); align-self: flex-start; margin-top: .7rem;
+}
+.pcard-int {
+  font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800;
+  letter-spacing: -.03em; line-height: 1; color: var(--text);
+}
+.pcard.featured .pcard-int { color: var(--accent); }
+.pcard-dec {
+  font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+  color: inherit; align-self: flex-end; margin-bottom: .5rem;
+}
 
-  .pcard-label {
-    font-family: 'Syne Mono', monospace; font-size: .6rem;
-    letter-spacing: .18em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 1.4rem; display: block;
-  }
-  .pcard.featured .pcard-label { color: var(--accent); }
+.pcard-period { font-size: .82rem; color: var(--text-dim); font-weight: 300; margin-bottom: 1rem; }
 
-  .pcard-price { display: flex; align-items: baseline; gap: .2rem; margin-bottom: .3rem; }
-  .pcard-cur {
-    font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
-    color: var(--text-mid); align-self: flex-start; margin-top: .7rem;
-  }
-  .pcard-int {
-    font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800;
-    letter-spacing: -.03em; line-height: 1; color: var(--text);
-  }
-  .pcard.featured .pcard-int { color: var(--accent); }
-  .pcard-dec {
-    font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
-    color: inherit; align-self: flex-end; margin-bottom: .5rem;
-  }
+.pcard-save {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--gold-lo); border: 1px solid rgba(212,168,83,.28);
+  padding: .45rem .9rem; margin-bottom: 1.8rem;
+}
+.pcard-save-pct {
+  font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800;
+  color: var(--gold); letter-spacing: -.02em; line-height: 1;
+}
+.pcard-save-label {
+  font-family: 'Syne Mono', monospace; font-size: .65rem;
+  letter-spacing: .08em; color: var(--gold); line-height: 1.3;
+  text-transform: uppercase;
+}
 
-  .pcard-period { font-size: .82rem; color: var(--text-dim); font-weight: 300; margin-bottom: 1rem; }
+.pcard-rule { height: 1px; background: var(--border); margin-bottom: 1.6rem; }
 
-  /* ── SAVE BADGE ── */
-  .pcard-save-block {
-    display: flex; align-items: center; gap: .7rem;
-    background: linear-gradient(135deg, rgba(212,168,83,0.1), rgba(184,208,224,0.07));
-    border: 1px solid rgba(212,168,83,0.25);
-    padding: .7rem 1rem;
-    margin-bottom: 1.8rem;
-  }
-  .pcard-save-pct {
-    font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
-    color: var(--gold); letter-spacing: -.02em; line-height: 1; white-space: nowrap;
-  }
-  .pcard-save-text { font-size: .82rem; color: var(--text-mid); font-weight: 300; line-height: 1.4; }
-  .pcard-save-text strong { color: var(--gold); font-weight: 600; display: block; font-size: .88rem; }
+.pcard-features { list-style: none; display: flex; flex-direction: column; gap: .58rem; margin-bottom: 2rem; }
+.pcard-features li {
+  display: flex; align-items: flex-start; gap: .7rem;
+  font-size: .88rem; color: var(--text-mid); font-weight: 300;
+}
+.pcard-features li::before {
+  content: ''; flex-shrink: 0; margin-top: .52rem;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--text-dim);
+}
+.pcard.featured .pcard-features li::before { background: var(--accent); }
 
-  .pcard-rule { height: 1px; background: var(--border); margin-bottom: 1.6rem; }
+.btn-buy {
+  display: block; width: 100%; font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
+  padding: 1rem; border: none; cursor: pointer;
+  transition: all .25s; position: relative; overflow: hidden;
+}
+.btn-buy-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-mid); }
+.btn-buy-ghost:hover { color: var(--text); border-color: var(--border-hi); background: rgba(255,255,255,.025); }
+.btn-buy-solid { background: var(--text); color: var(--bg); }
+.btn-buy-solid:hover { opacity: .87; }
+.btn-buy-solid::after {
+  content: ''; position: absolute; top: -50%; left: -70%;
+  width: 42%; height: 200%; background: rgba(255,255,255,.16);
+  transform: skewX(-18deg); transition: left .55s;
+}
+.btn-buy-solid:hover::after { left: 140%; }
 
-  .pcard-features { list-style: none; display: flex; flex-direction: column; gap: .58rem; margin-bottom: 2rem; }
-  .pcard-features li {
-    display: flex; align-items: flex-start; gap: .7rem;
-    font-size: .88rem; color: var(--text-mid); font-weight: 300;
-  }
-  .pcard-features li::before {
-    content: ''; flex-shrink: 0; margin-top: .52rem;
-    width: 4px; height: 4px; border-radius: 50%; background: var(--text-dim);
-  }
-  .pcard.featured .pcard-features li::before { background: var(--accent); }
+footer {
+  border-top: 1px solid var(--border); padding: 2rem 3rem;
+  position: relative; z-index: 1;
+}
 
-  .btn-buy {
-    display: block; width: 100%; font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
-    padding: 1rem; border: none; cursor: pointer;
-    transition: all .25s; position: relative; overflow: hidden;
-  }
-  .btn-buy-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-mid); }
-  .btn-buy-ghost:hover { color: var(--text); border-color: var(--border-hi); background: rgba(255,255,255,0.025); }
+.footer-main {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem;
+}
+.footer-left { display: flex; align-items: center; gap: 1.2rem; }
+.footer-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: .85rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-dim);
+}
+.footer-discord {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: 1px solid var(--border);
+  color: var(--text-dim); text-decoration: none;
+  transition: color .25s, border-color .25s;
+}
+.footer-discord:hover { color: #7289da; border-color: rgba(114,137,218,.35); }
+.footer-discord svg { width: 14px; height: 14px; }
 
-  .btn-buy-solid { background: var(--text); color: var(--bg); }
-  .btn-buy-solid:hover { opacity: .87; }
-  .btn-buy-solid::after {
-    content: ''; position: absolute; top: -50%; left: -70%;
-    width: 42%; height: 200%; background: rgba(255,255,255,0.16);
-    transform: skewX(-18deg); transition: left .55s;
-  }
-  .btn-buy-solid:hover::after { left: 140%; }
+.footer-note { font-family: 'Syne Mono', monospace; font-size: .64rem; color: var(--text-dim); letter-spacing: .06em; }
 
-  /* ==============================
-     FOOTER
-  ============================== */
-  footer {
-    border-top: 1px solid var(--border); padding: 2rem 3rem;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1rem; position: relative; z-index: 1;
-  }
-  .footer-left { display: flex; align-items: center; gap: 1.2rem; }
-  .footer-logo {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: .85rem; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  /* Discord icon in footer */
-  .footer-discord {
-    display: flex; align-items: center; justify-content: center;
-    width: 30px; height: 30px; border: 1px solid var(--border);
-    color: var(--text-dim); text-decoration: none;
-    transition: color .25s, border-color .25s;
-  }
-  .footer-discord:hover { color: #7289da; border-color: rgba(114,137,218,0.35); }
-  .footer-discord svg { width: 14px; height: 14px; }
+.footer-legal {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  padding-top: 1.2rem; border-top: 1px solid var(--border);
+}
+.footer-legal a {
+  font-family: 'Syne Mono', monospace; font-size: .62rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  transition: color .25s;
+}
+.footer-legal a:hover { color: var(--text-mid); }
 
-  .footer-note { font-family: 'Syne Mono', monospace; font-size: .64rem; color: var(--text-dim); letter-spacing: .06em; }
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.8);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
 
-  /* ==============================
-     REVEAL ANIMATIONS
-  ============================== */
-  .reveal {
-    opacity: 0; transform: translateY(22px);
-    transition: opacity .65s, transform .65s;
-  }
-  .reveal.visible { opacity: 1; transform: none; }
+.modal {
+  background: #111; border: 1px solid var(--border-hi);
+  max-width: 560px; width: 100%; padding: 2.8rem;
+  position: relative;
+  transform: translateY(20px) scale(.97);
+  transition: transform .35s cubic-bezier(.22,.68,0,1.1);
+  max-height: 85vh; overflow-y: auto;
+  word-break: break-word; overflow-wrap: break-word;
+}
+.modal-backdrop.open .modal { transform: none; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: none; }
-  }
+.modal-close {
+  position: absolute; top: 1.2rem; right: 1.4rem;
+  background: transparent; border: none; color: var(--text-dim);
+  font-size: 1.4rem; cursor: pointer; line-height: 1;
+  transition: color .2s;
+}
+.modal-close:hover { color: var(--text); }
 
-  /* ==============================
-     RESPONSIVE
-  ============================== */
-  @media (max-width: 720px) {
-    nav { padding: 1rem 1.2rem; }
-    .nav-links { display: none; }
-    .howto-intro { grid-template-columns: 1fr; gap: 2.5rem; }
-    .howto-side { display: none; }
-    footer { flex-direction: column; text-align: center; }
-    .footer-left { flex-direction: column; align-items: center; }
-  }
+.modal-tag {
+  font-family: 'Syne Mono', monospace; font-size: .6rem;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1rem;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 1.5rem; letter-spacing: -.02em; color: var(--text); margin-bottom: 1.2rem;
+}
+.modal-body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-mid); font-size: .9rem; line-height: 1.78; font-weight: 300;
+}
+.modal-body h3 {
+  font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 600;
+  color: var(--text); margin: 1.5rem 0 .45rem; letter-spacing: 0;
+}
+.modal-body p { margin-bottom: .65rem; }
+.modal-body a { color: var(--accent); text-decoration: none; }
+.modal-body a:hover { text-decoration: underline; }
+.modal-body strong { color: var(--text); font-weight: 500; }
+
+#modal-tos .modal-title,
+#modal-privacy .modal-title,
+#modal-refund .modal-title {
+  font-family: 'DM Sans', sans-serif; font-weight: 700; letter-spacing: -.01em;
+}
+#modal-tos .modal-tag,
+#modal-privacy .modal-tag,
+#modal-refund .modal-tag {
+  font-family: 'DM Sans', sans-serif; font-weight: 400;
+}
+
+.checkout-notice {
+  background: rgba(184,208,224,.05); border: 1px solid rgba(184,208,224,.15);
+  padding: 1.2rem; margin: 1.4rem 0; font-size: .88rem; line-height: 1.7;
+}
+.checkout-tos-check {
+  display: flex; align-items: flex-start; gap: .75rem; margin: 1.4rem 0;
+}
+.checkout-tos-check input[type="checkbox"] {
+  margin-top: .18rem; flex-shrink: 0; cursor: pointer;
+  accent-color: var(--accent); width: 15px; height: 15px;
+}
+.checkout-tos-check label {
+  font-size: .85rem; color: var(--text-mid); cursor: pointer; font-weight: 300; line-height: 1.5;
+}
+.checkout-tos-check label a { color: var(--accent); text-decoration: none; }
+.checkout-tos-check label a:hover { text-decoration: underline; }
+
+.btn-proceed {
+  display: block; width: 100%; margin-top: 1.4rem;
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: .82rem; letter-spacing: .14em; text-transform: uppercase;
+  background: var(--text); color: var(--bg); border: none;
+  padding: 1rem; cursor: pointer; transition: opacity .25s;
+  position: relative; overflow: hidden;
+}
+.btn-proceed:disabled {
+  opacity: .3; cursor: not-allowed;
+}
+.btn-proceed:not(:disabled):hover { opacity: .87; }
+.btn-proceed::after {
+  content: ''; position: absolute; top: -50%; left: -70%;
+  width: 40%; height: 200%; background: rgba(255,255,255,.14);
+  transform: skewX(-18deg); transition: left .5s;
+}
+.btn-proceed:not(:disabled):hover::after { left: 140%; }
+
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .65s, transform .65s;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 1024px) {
+  nav { padding: 1rem 2rem; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .howto-intro { gap: 3rem; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.4rem; gap: .6rem; }
+  .nav-links { display: none; }
+  .nav-right { gap: .6rem; }
+  .nav-cta { padding: .46rem 1rem; font-size: .68rem; }
+
+  .hero { padding: 5rem 1.4rem 3rem; }
+  .hero-title { font-size: clamp(3rem, 14vw, 6rem); }
+  .hero-overline { font-size: .6rem; letter-spacing: .16em; }
+  .hero-sub { font-size: .95rem; padding: 0 .5rem; }
+  .hero-btns { flex-direction: column; align-items: center; gap: .6rem; }
+  .hero-btns .btn-primary,
+  .hero-btns .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+  .stats { max-width: 100%; }
+
+  section { padding: 4.5rem 1.4rem; }
+  .container { max-width: 100%; }
+  .section-title { font-size: clamp(1.7rem, 5vw, 2.2rem); }
+
+  .features-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .features-header .section-desc { max-width: 100%; }
+  .features-grid { grid-template-columns: 1fr; }
+  .fcard { padding: 2rem 1.6rem; }
+  .fcard-bg-num { font-size: 4rem; }
+
+  .video-wrap { max-width: 100%; }
+
+  .howto-intro { grid-template-columns: 1fr; gap: 2rem; }
+  .howto-side { display: none; }
+  .step { grid-template-columns: 36px 1fr; gap: 1rem; }
+
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .pcard.featured:hover { transform: translateY(-6px) scale(1.008); }
+
+  footer { padding: 1.8rem 1.4rem; }
+  .footer-main { flex-direction: column; align-items: flex-start; gap: .8rem; }
+  .footer-legal { gap: 1rem; }
+
+  .modal { padding: 2rem 1.6rem; }
+  .modal-title { font-size: 1.3rem; }
+}
+
+@media (max-width: 480px) {
+  nav { padding: .85rem 1rem; }
+  .nav-logo { font-size: .88rem; letter-spacing: .12em; }
+  .lang-toggle { display: none; }
+  .discord-link { width: 30px; height: 30px; }
+
+  .hero { padding: 5rem 1rem 3rem; min-height: 100svh; }
+  .hero-title { font-size: clamp(2.6rem, 16vw, 4.5rem); }
+  .hero-overline { flex-wrap: wrap; gap: .5rem; font-size: .55rem; }
+  .hero-overline::before, .hero-overline::after { width: 20px; }
+  .stats { grid-template-columns: repeat(3, 1fr); margin-top: 3rem; }
+  .stat { padding: 1rem .5rem; }
+  .stat-val { font-size: 1.3rem; }
+  .stat-key { font-size: .52rem; letter-spacing: .1em; }
+
+  section { padding: 3.5rem 1rem; }
+
+  .fcard { padding: 1.8rem 1.2rem; }
+
+  .pricing-grid { max-width: 100%; }
+  .pcard-body { padding: 1.8rem 1.6rem; }
+  .pcard-int { font-size: 4rem; }
+
+  footer { padding: 1.6rem 1rem; }
+  .footer-legal { gap: .75rem; }
+  .footer-legal a { font-size: .58rem; }
+
+  .modal { padding: 1.6rem 1.2rem; margin: .5rem; }
+  .modal-title { font-size: 1.15rem; }
+  .modal-body { font-size: .85rem; }
+  .modal-close { top: 1rem; right: 1rem; }
+}
+
+@media (max-width: 360px) {
+  .hero-title { font-size: clamp(2.2rem, 17vw, 3.5rem); }
+  .nav-cta { padding: .42rem .85rem; font-size: .65rem; }
+}
 </style>
 </head>
 <body>
@@ -561,34 +724,29 @@
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('pl')">PL</button>
     </div>
-    <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})"
-      data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
+    <button class="nav-cta" onclick="openCheckout('monthly')" data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-overline" data-en="Minecraft Crystal PvP Automation" data-pl="Automatyzacja Crystal PvP dla Minecraft">
-      Minecraft Crystal PvP Automation
+
+    <div class="hero-overline" data-en="Advanced Input Optimization Tool" data-pl="Zaawansowane Narzędzie Optymalizacji Inputu">
+      Advanced Input Optimization Tool
     </div>
 
     <h1 class="hero-title">
-      CRYSTAL<br>
-      <span class="hollow">CLICKER</span>
+      <span class="title-line">CRYSTAL</span>
+      <span class="title-line hollow">CLICKER</span>
     </h1>
 
-    <p class="hero-sub"
-       data-en="Precision-engineered combat automation for Crystal PvP. Every module is built around one objective — millisecond-level dominance in every engagement."
-       data-pl="Precyzyjnie zaprojektowana automatyzacja walki Crystal PvP. Każdy moduł realizuje jeden cel — dominację na poziomie milisekund w każdym starciu.">
-      Precision-engineered combat automation for Crystal PvP. Every module is built around one objective — millisecond-level dominance in every engagement.
+    <p class="hero-sub" data-en="A precision-engineered gaming workflow and input utility. Every module delivers superior performance through intelligent sequence execution and input synchronization." data-pl="Precyzyjnie zaprojektowane narzędzie do optymalizacji workflow i inputu w grach. Każdy moduł zapewnia przewagę wydajności poprzez inteligentną sekwencję i synchronizację wejścia.">
+      A precision-engineered gaming workflow and input utility. Every module delivers superior performance through intelligent sequence execution and input synchronization.
     </p>
 
     <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})"
-        data-en="Get a License" data-pl="Kup Licencję">Get a License</button>
-      <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})"
-        data-en="Explore Modules" data-pl="Zobacz Moduły">Explore Modules</button>
+      <button class="btn-primary" onclick="openCheckout('annual')" data-en="Get a License" data-pl="Kup Licencję">Get a License</button>
+      <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" data-en="Explore Modules" data-pl="Zobacz Moduły">Explore Modules</button>
     </div>
 
     <div class="stats">
@@ -608,8 +766,6 @@
   </div>
 </section>
 
-
-<!-- FEATURES -->
 <section id="features">
   <div class="container">
     <div class="features-header reveal">
@@ -617,10 +773,8 @@
         <span class="section-tag" data-en="Modules" data-pl="Moduły">Modules</span>
         <h2 class="section-title" data-en="Five modules. Zero compromises." data-pl="Pięć modułów. Zero kompromisów.">Five modules. Zero compromises.</h2>
       </div>
-      <p class="section-desc"
-         data-en="Each module targets a specific gap in your combat loop and closes it automatically — configurable, hotkey-bound, and independent."
-         data-pl="Każdy moduł eliminuje konkretną słabość w Twoim stylu walki — konfigurowalny, przypisany do klawisza, w pełni niezależny.">
-        Each module targets a specific gap in your combat loop and closes it automatically — configurable, hotkey-bound, and independent.
+      <p class="section-desc" data-en="Each module targets a specific gap in your gaming workflow and closes it automatically — configurable, hotkey-bound, and independent." data-pl="Każdy moduł eliminuje konkretną lukę w Twoim workflow — konfigurowalny, przypisany do klawisza, w pełni niezależny.">
+        Each module targets a specific gap in your gaming workflow and closes it automatically — configurable, hotkey-bound, and independent.
       </p>
     </div>
 
@@ -629,48 +783,40 @@
       <div class="fcard">
         <div class="fcard-bg-num">01</div>
         <div class="fcard-num">01 / 05</div>
-        <div class="fcard-tag" data-en="Combat" data-pl="Walka">Combat</div>
+        <div class="fcard-tag" data-en="Input Optimization" data-pl="Optymalizacja Inputu">Input Optimization</div>
         <div class="fcard-name">Flick-Hit</div>
-        <p class="fcard-desc"
-           data-en="An advanced module that optimizes combat dynamics through recoil manipulation. Flick-Hit corrects your strike vector to maximize the distance the opponent is launched, or to precisely control their displacement — making it easier to keep them locked in a combo."
-           data-pl="Zaawansowany moduł optymalizujący dynamikę walki poprzez manipulację odrzutem. Flick-Hit koryguje wektor uderzenia w taki sposób, aby zmaksymalizować dystans, na jaki odlatuje przeciwnik, lub precyzyjnie kontrolować jego pozycję, ułatwiając utrzymanie go w combo.">
-          An advanced module that optimizes combat dynamics through recoil manipulation. Flick-Hit corrects your strike vector to maximize the distance the opponent is launched, or to precisely control their displacement — making it easier to keep them locked in a combo.
+        <p class="fcard-desc" data-en="An advanced input optimization module that corrects the strike vector in real time. Flick-Hit adjusts recoil dynamics to maximize displacement distance or to precisely synchronize positional output — enabling consistent sequence control." data-pl="Zaawansowany moduł optymalizacji inputu korygujący wektor uderzenia w czasie rzeczywistym. Flick-Hit dostosowuje dynamikę odrzutu, aby zmaksymalizować dystans displacement lub precyzyjnie synchronizować output pozycyjny — zapewniając spójną kontrolę sekwencji.">
+          An advanced input optimization module that corrects the strike vector in real time. Flick-Hit adjusts recoil dynamics to maximize displacement distance or to precisely synchronize positional output — enabling consistent sequence control.
         </p>
       </div>
 
       <div class="fcard">
         <div class="fcard-bg-num">02</div>
         <div class="fcard-num">02 / 05</div>
-        <div class="fcard-tag" data-en="Automation" data-pl="Automatyzacja">Automation</div>
+        <div class="fcard-tag" data-en="Sequence Execution" data-pl="Wykonanie Sekwencji">Sequence Execution</div>
         <div class="fcard-name">Anchor Macro</div>
-        <p class="fcard-desc"
-           data-en="A fully automated combat system. On a single keypress, the module executes a complete sequence: instant Respawn Anchor placement, Glowstone charge, and detonation. Engineered for maximum attack speed with minimum latency."
-           data-pl="Zautomatyzowany system do walki. Moduł po naciśnięciu jednego klawisza wykonuje pełną sekwencję: natychmiastowe postawienie bloku Respawn Anchor, doładowanie go Glowstone'em oraz detonację. Gwarantuje najwyższą szybkość ataku przy minimalnym opóźnieniu.">
-          A fully automated combat system. On a single keypress, the module executes a complete sequence: instant Respawn Anchor placement, Glowstone charge, and detonation. Engineered for maximum attack speed with minimum latency.
+        <p class="fcard-desc" data-en="A fully automated sequence execution system. On a single keypress the module performs a complete action chain: instant Respawn Anchor placement, Glowstone charge, and detonation. Engineered for maximum throughput with minimum input latency." data-pl="W pełni zautomatyzowany system wykonywania sekwencji. Po naciśnięciu jednego klawisza moduł wykonuje kompletny łańcuch akcji: natychmiastowe postawienie Respawn Anchor, doładowanie Glowstone i detonację. Zaprojektowany dla maksymalnej wydajności przy minimalnym opóźnieniu inputu.">
+          A fully automated sequence execution system. On a single keypress the module performs a complete action chain: instant Respawn Anchor placement, Glowstone charge, and detonation. Engineered for maximum throughput with minimum input latency.
         </p>
       </div>
 
       <div class="fcard">
         <div class="fcard-bg-num">03</div>
         <div class="fcard-num">03 / 05</div>
-        <div class="fcard-tag" data-en="Crystal PvP" data-pl="Crystal PvP">Crystal PvP</div>
+        <div class="fcard-tag" data-en="Input Synchronization" data-pl="Synchronizacja Inputu">Input Synchronization</div>
         <div class="fcard-name">Crystal Macro</div>
-        <p class="fcard-desc"
-           data-en="Intelligent Crystal PvP assistance that emulates a precise double-click via a single button. Simultaneously places an End Crystal and detonates it — drastically reducing reaction time and increasing the likelihood of landing lethal damage."
-           data-pl="Inteligentne wsparcie dla Crystal PvP. Emuluje precyzyjne podwójne kliknięcie za pomocą jednego przycisku. Pozwala na symultaniczne postawienie End Crystal i jego natychmiastową detonację — drastycznie skracając czas reakcji i zwiększając szansę na zadanie śmiertelnych obrażeń.">
-          Intelligent Crystal PvP assistance that emulates a precise double-click via a single button. Simultaneously places an End Crystal and detonates it — drastically reducing reaction time and increasing the likelihood of landing lethal damage.
+        <p class="fcard-desc" data-en="Intelligent input synchronization for End Crystal workflow. The module emulates a precise double-click via a single button — simultaneously executing placement and detonation sequences, drastically reducing the execution window and improving output consistency." data-pl="Inteligentna synchronizacja inputu dla workflow End Crystal. Moduł emuluje precyzyjne podwójne kliknięcie za pomocą jednego przycisku — jednocześnie wykonując sekwencje placement i detonacji, drastycznie skracając okno wykonania i poprawiając spójność outputu.">
+          Intelligent input synchronization for End Crystal workflow. The module emulates a precise double-click via a single button — simultaneously executing placement and detonation sequences, drastically reducing the execution window and improving output consistency.
         </p>
       </div>
 
       <div class="fcard">
         <div class="fcard-bg-num">04</div>
         <div class="fcard-num">04 / 05</div>
-        <div class="fcard-tag" data-en="Inventory" data-pl="Ekwipunek">Inventory</div>
+        <div class="fcard-tag" data-en="Inventory Automation" data-pl="Automatyzacja Ekwipunku">Inventory Automation</div>
         <div class="fcard-name">Attribute Swap</div>
-        <p class="fcard-desc"
-           data-en="Enables instantaneous switching between held items to exploit their specific attributes or stat bonuses. Automates equipment rotation so you gain the benefit of any item in a fraction of a second — without interrupting your movement flow."
-           data-pl="Moduł pozwalający na błyskawiczną zmianę trzymanych przedmiotów w celu wykorzystania ich specyficznych atrybutów lub bonusów. Automatyzuje rotację ekwipunku, pozwalając na uzyskanie korzyści z danego przedmiotu w ułamku sekundy, bez przerywania płynności ruchu.">
-          Enables instantaneous switching between held items to exploit their specific attributes or stat bonuses. Automates equipment rotation so you gain the benefit of any item in a fraction of a second — without interrupting your movement flow.
+        <p class="fcard-desc" data-en="Enables instantaneous hotswap between held items to leverage their specific attributes or stat bonuses. Automates inventory rotation so the active item benefit is applied within a single tick — without interrupting movement or workflow continuity." data-pl="Umożliwia natychmiastową zmianę trzymanych przedmiotów w celu wykorzystania ich atrybutów lub bonusów. Automatyzuje rotację ekwipunku tak, aby korzyść z aktywnego przedmiotu była stosowana w jednym ticku — bez przerywania ruchu czy ciągłości workflow.">
+          Enables instantaneous hotswap between held items to leverage their specific attributes or stat bonuses. Automates inventory rotation so the active item benefit is applied within a single tick — without interrupting movement or workflow continuity.
         </p>
       </div>
 
@@ -678,11 +824,9 @@
         <div class="fcard-bg-num">05</div>
         <div class="fcard-num">05 / 05</div>
         <div class="fcard-tag" data-en="Privacy" data-pl="Prywatność">Privacy</div>
-        <div class="fcard-name">Stream Proof</div>
-        <p class="fcard-desc"
-           data-en="Full discretion guaranteed. The module overlay is completely invisible to screen capture software such as OBS and Discord, and is removed from the taskbar entirely — making it undetectable during any screen share or live stream."
-           data-pl="Gwarancja pełnej dyskrecji. Menu modułu jest całkowicie niewidoczne na streamach (OBS, Discord) oraz zostaje usunięte z paska zadań, co czyni je nie do wykrycia podczas udostępniania ekranu.">
-          Full discretion guaranteed. The module overlay is completely invisible to screen capture software such as OBS and Discord, and is removed from the taskbar entirely — making it undetectable during any screen share or live stream.
+        <div class="fcard-name" data-en="Stream Proof" data-pl="Odporność na Streamy">Stream Proof</div>
+        <p class="fcard-desc" data-en="Full visual discretion. The overlay is completely excluded from screen capture pipelines (OBS, Discord screen share) and removed from the system taskbar — ensuring the interface remains private during any streaming or recording session." data-pl="Pełna dyskrecja wizualna. Overlay jest całkowicie wykluczony z systemów przechwytywania ekranu (OBS, Discord screen share) i usunięty z paska zadań systemu — zapewniając prywatność interfejsu podczas streamowania lub nagrywania.">
+          Full visual discretion. The overlay is completely excluded from screen capture pipelines (OBS, Discord screen share) and removed from the system taskbar — ensuring the interface remains private during any streaming or recording session.
         </p>
       </div>
 
@@ -690,20 +834,15 @@
   </div>
 </section>
 
-
-<!-- VIDEO -->
 <section id="video">
   <div class="container">
     <div class="video-header reveal">
       <span class="section-tag" data-en="Preview" data-pl="Podgląd">Preview</span>
       <h2 class="section-title" data-en="See It in Action" data-pl="Zobacz w Akcji">See It in Action</h2>
-      <p class="section-desc"
-         data-en="Watch Crystal Clicker at work. Real gameplay, real results."
-         data-pl="Zobacz Crystal Clicker w akcji. Prawdziwy gameplay, prawdziwe wyniki.">
-        Watch Crystal Clicker at work. Real gameplay, real results.
+      <p class="section-desc" data-en="Watch Crystal Clicker at work. Real usage, real results." data-pl="Zobacz Crystal Clicker w akcji. Prawdziwe użycie, prawdziwe wyniki.">
+        Watch Crystal Clicker at work. Real usage, real results.
       </p>
     </div>
-    <!-- REPLACE the src below with your YouTube embed URL: https://www.youtube.com/embed/YOUR_VIDEO_ID -->
     <div class="video-wrap reveal">
       <iframe
         src="https://www.youtube.com/embed/dQw4w9WgXcQ"
@@ -715,18 +854,14 @@
   </div>
 </section>
 
-
-<!-- HOW IT WORKS -->
 <section id="howto">
   <div class="container">
     <div class="howto-intro">
       <div>
         <span class="section-tag reveal" data-en="Setup" data-pl="Konfiguracja">Setup</span>
         <h2 class="section-title reveal" data-en="Running in under five minutes." data-pl="Gotowy w mniej niż pięć minut.">Running in under five minutes.</h2>
-        <p class="section-desc reveal" style="margin-bottom:0"
-           data-en="No complex configuration. No dependencies. Just a license and you are live."
-           data-pl="Żadnej skomplikowanej konfiguracji. Żadnych zależności. Tylko licencja i jesteś w grze.">
-          No complex configuration. No dependencies. Just a license and you are live.
+        <p class="section-desc reveal" style="margin-bottom:0" data-en="No complex configuration. No external dependencies. Just a license and you are live." data-pl="Żadnej skomplikowanej konfiguracji. Żadnych zewnętrznych zależności. Tylko licencja i jesteś w grze.">
+          No complex configuration. No external dependencies. Just a license and you are live.
         </p>
 
         <div class="steps">
@@ -734,8 +869,7 @@
             <span class="step-num">01</span>
             <div>
               <h3 data-en="Purchase a License" data-pl="Kup Licencję">Purchase a License</h3>
-              <p data-en="Complete your purchase and a Discord role granting access to the private channel is assigned to your account automatically — no waiting, no manual review, no friction."
-                 data-pl="Po zakupie rola na Discordzie z dostępem do prywatnego kanału jest przypisywana do Twojego konta automatycznie — bez czekania, bez ręcznej weryfikacji, bez opóźnień.">
+              <p data-en="Complete your purchase and a Discord role granting access to the private channel is assigned to your account automatically — no waiting, no manual review, no friction." data-pl="Po zakupie rola na Discordzie z dostępem do prywatnego kanału jest przypisywana automatycznie — bez czekania, ręcznej weryfikacji ani opóźnień.">
                 Complete your purchase and a Discord role granting access to the private channel is assigned to your account automatically — no waiting, no manual review, no friction.
               </p>
             </div>
@@ -744,9 +878,8 @@
             <span class="step-num">02</span>
             <div>
               <h3 data-en="Download the Client" data-pl="Pobierz Program">Download the Client</h3>
-              <p data-en="Head to the private Discord channel and download the latest Crystal Clicker build directly from there. Always up to date, no third-party sites, no suspicious links."
-                 data-pl="Przejdź do prywatnego kanału na Discordzie i pobierz najnowszą wersję Crystal Clickera bezpośrednio stamtąd. Zawsze aktualny, żadnych zewnętrznych stron, żadnych podejrzanych linków.">
-                Head to the private Discord channel and download the latest Crystal Clicker build directly from there. Always up to date, no third-party sites, no suspicious links.
+              <p data-en="Head to the private Discord channel and download the latest Crystal Clicker build directly from there. Always up to date — no third-party sites, no suspicious links." data-pl="Przejdź do prywatnego kanału na Discordzie i pobierz najnowszą wersję Crystal Clickera bezpośrednio stamtąd. Zawsze aktualny — żadnych zewnętrznych stron, żadnych podejrzanych linków.">
+                Head to the private Discord channel and download the latest Crystal Clicker build directly from there. Always up to date — no third-party sites, no suspicious links.
               </p>
             </div>
           </div>
@@ -754,19 +887,17 @@
             <span class="step-num">03</span>
             <div>
               <h3 data-en="Generate Your Key" data-pl="Wygeneruj Klucz">Generate Your Key</h3>
-              <p data-en="Use the Discord bot to generate your personal activation code with a single command. The code is tied to your account and ready to paste immediately."
-                 data-pl="Użyj bota Discord, aby jedną komendą wygenerować swój osobisty kod aktywacyjny. Kod jest przypisany do Twojego konta i gotowy do wklejenia od razu.">
-                Use the Discord bot to generate your personal activation code with a single command. The code is tied to your account and ready to paste immediately.
+              <p data-en="Use the Discord bot to generate your personal activation code with a single command. The code is bound to your account and ready to use immediately." data-pl="Użyj bota Discord, aby jedną komendą wygenerować swój osobisty kod aktywacyjny. Kod jest przypisany do Twojego konta i gotowy do użycia od razu.">
+                Use the Discord bot to generate your personal activation code with a single command. The code is bound to your account and ready to use immediately.
               </p>
             </div>
           </div>
           <div class="step">
             <span class="step-num">04</span>
             <div>
-              <h3 data-en="Launch and Dominate" data-pl="Odpal i Dominuj">Launch and Dominate</h3>
-              <p data-en="Fire up Crystal Clicker, enter your key, bind your hotkeys and drop into any server. From the very first engagement the difference is immediate — faster crystals, cleaner combos, opponents who simply cannot keep pace."
-                 data-pl="Uruchom Crystal Clicker, wpisz klucz, ustaw klawisze i wchodzisz do gry. Już od pierwszego starcia różnica jest natychmiastowa — szybsze crystale, czystsze combo i przeciwnicy, którzy po prostu nie nadążają.">
-                Fire up Crystal Clicker, enter your key, bind your hotkeys and drop into any server. From the very first engagement the difference is immediate — faster crystals, cleaner combos, opponents who simply cannot keep pace.
+              <h3 data-en="Launch and Enjoy" data-pl="Odpal i Ciesz się">Launch and Enjoy</h3>
+              <p data-en="Start Crystal Clicker, enter your key, bind your hotkeys and load into any session. The improvement in execution speed and workflow consistency is immediate and measurable." data-pl="Uruchom Crystal Clicker, wpisz klucz, ustaw klawisze i załaduj do dowolnej sesji. Poprawa szybkości wykonania i spójności workflow jest natychmiastowa i mierzalna.">
+                Start Crystal Clicker, enter your key, bind your hotkeys and load into any session. The improvement in execution speed and workflow consistency is immediate and measurable.
               </p>
             </div>
           </div>
@@ -808,7 +939,7 @@
             </div>
             <div>
               <div class="hv-label" data-en="Step 04" data-pl="Krok 04">Step 04</div>
-              <div class="hv-text" data-en="Launch &amp; dominate" data-pl="Odpal i dominuj">Launch &amp; dominate</div>
+              <div class="hv-text" data-en="Launch &amp; enjoy" data-pl="Odpal i ciesz się">Launch &amp; enjoy</div>
             </div>
           </div>
         </div>
@@ -817,23 +948,18 @@
   </div>
 </section>
 
-
-<!-- PRICING -->
 <section id="pricing">
   <div class="container">
     <div class="pricing-header reveal">
       <span class="section-tag" data-en="Pricing" data-pl="Cennik">Pricing</span>
       <h2 class="section-title" data-en="Pick your plan." data-pl="Wybierz swój plan.">Pick your plan.</h2>
-      <p class="section-desc"
-         data-en="All modules included in every plan. No upsells, no auto-renewals, no hidden fees."
-         data-pl="Wszystkie moduły w każdym planie. Żadnych dosprzedaży, automatycznych odnowień ani ukrytych opłat.">
+      <p class="section-desc" data-en="All modules included in every plan. No upsells, no auto-renewals, no hidden fees." data-pl="Wszystkie moduły w każdym planie. Żadnych dosprzedaży, automatycznych odnowień ani ukrytych opłat.">
         All modules included in every plan. No upsells, no auto-renewals, no hidden fees.
       </p>
     </div>
 
     <div class="pricing-grid reveal">
 
-      <!-- MONTHLY -->
       <div class="pcard">
         <div class="pcard-stripe"></div>
         <div class="pcard-body">
@@ -850,15 +976,14 @@
             <li data-en="Anchor Macro Module" data-pl="Moduł Anchor Macro">Anchor Macro Module</li>
             <li data-en="Crystal Macro (double-click)" data-pl="Crystal Macro (podwójny klik)">Crystal Macro (double-click)</li>
             <li data-en="Attribute Swap Module" data-pl="Moduł Attribute Swap">Attribute Swap Module</li>
-            <li>Stream Proof</li>
+            <li data-en="Stream Proof" data-pl="Odporność na Streamy">Stream Proof</li>
             <li data-en="Updates for the full period" data-pl="Aktualizacje przez cały okres">Updates for the full period</li>
             <li data-en="Discord support" data-pl="Wsparcie na Discordzie">Discord support</li>
           </ul>
-          <button onclick="window.location.href='https://buy.stripe.com/test_bJeaEY4AwcfE70veloasg01';" class="btn-buy btn-buy-ghost" data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
+          <button class="btn-buy btn-buy-ghost" onclick="openCheckout('monthly')" data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
         </div>
       </div>
 
-      <!-- ANNUAL (featured) -->
       <div class="pcard featured">
         <div class="pcard-stripe"></div>
         <div class="pcard-body">
@@ -870,13 +995,9 @@
           </div>
           <div class="pcard-period" data-en="per 365 days / one-time payment" data-pl="na 365 dni / jednorazowa płatność">per 365 days / one-time payment</div>
 
-          <!-- Prominent save badge -->
-          <div class="pcard-save-block">
-            <div class="pcard-save-pct">79%</div>
-            <div class="pcard-save-text">
-              <strong data-en="cheaper than monthly" data-pl="taniej niż miesięczna">cheaper than monthly</strong>
-              <span data-en="Save $56.89 — pay $14.99 instead of $71.88 / year" data-pl="Oszczędzasz $56.89 — płacisz $14.99 zamiast $71.88 / rok">Save $56.89 — pay $14.99 instead of $71.88 / year</span>
-            </div>
+          <div class="pcard-save">
+            <span class="pcard-save-pct">-79%</span>
+            <span class="pcard-save-label" data-en="Save $56.89<br>vs. monthly plan" data-pl="Oszczędzasz 56.89$<br>względem planu miesięcznego">Save $56.89<br>vs. monthly plan</span>
           </div>
 
           <div class="pcard-rule"></div>
@@ -885,145 +1006,297 @@
             <li data-en="Anchor Macro Module" data-pl="Moduł Anchor Macro">Anchor Macro Module</li>
             <li data-en="Crystal Macro (double-click)" data-pl="Crystal Macro (podwójny klik)">Crystal Macro (double-click)</li>
             <li data-en="Attribute Swap Module" data-pl="Moduł Attribute Swap">Attribute Swap Module</li>
-            <li>Stream Proof</li>
-            <li data-en="Priority updates &amp; early beta builds" data-pl="Priorytetowe aktualizacje i wczesny dostęp do bety">Priority updates &amp; early beta builds</li>
+            <li data-en="Stream Proof" data-pl="Odporność na Streamy">Stream Proof</li>
+            <li data-en="Priority updates &amp; early beta builds" data-pl="Priorytetowe aktualizacje i wczesny dostęp">Priority updates &amp; early beta builds</li>
             <li data-en="Priority 24/7 Discord support" data-pl="Priorytetowe wsparcie 24/7 na Discord">Priority 24/7 Discord support</li>
             <li data-en="VIP role on Discord" data-pl="Rola VIP na Discordzie">VIP role on Discord</li>
           </ul>
-          <button onclick="window.location.href='https://buy.stripe.com/test_eVq7sMd72a7w98D7X0asg00';" class="btn-buy btn-buy-solid" data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
+          <button class="btn-buy btn-buy-solid" onclick="openCheckout('annual')" data-en="Buy Now" data-pl="Kup Teraz">Buy Now</button>
         </div>
       </div>
 
     </div>
 
-    <p style="text-align:center; margin-top:2rem; font-family:'Syne Mono',monospace; font-size:.63rem; color: var(--text-dim); letter-spacing:.1em;"
-       data-en="Secure payment / Instant Discord role / No subscription"
-       data-pl="Bezpieczna płatność / Natychmiastowa rola Discord / Zero subskrypcji">
-      Secure payment / Instant Discord role / No subscription traps
+    <p style="text-align:center; margin-top:2rem; font-family:'Syne Mono',monospace; font-size:.63rem; color: var(--text-dim); letter-spacing:.1em;" data-en="Secure payment via Stripe / Instant Discord role / No subscription traps" data-pl="Bezpieczna płatność przez Stripe / Natychmiastowa rola Discord / Zero pułapek subskrypcji">
+      Secure payment via Stripe / Instant Discord role / No subscription traps
     </p>
   </div>
 </section>
 
-
 <footer>
-  <div class="footer-left">
-    <div class="footer-logo">CrystalClicker</div>
-    <a class="footer-discord" href="https://discord.gg/TqEZUDQ2tf" target="_blank" rel="noopener" title="Discord">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-    </a>
+  <div class="footer-main">
+    <div class="footer-left">
+      <div class="footer-logo">CrystalClicker</div>
+      <a class="footer-discord" href="https://discord.gg/TqEZUDQ2tf" target="_blank" rel="noopener" title="Discord">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+    </div>
+    <div class="footer-note" data-en="Not affiliated with Mojang Studios or Microsoft / (c) 2026 Crystal Clicker" data-pl="Niezwiązany z Mojang Studios ani Microsoft / (c) 2026 Crystal Clicker">
+      Not affiliated with Mojang Studios or Microsoft / (c) 2026 Crystal Clicker
+    </div>
   </div>
-  <div class="footer-note"
-       data-en="Not affiliated with Mojang Studios or Microsoft / (c) 2026 Crystal Clicker"
-       data-pl="Niezwiązany z Mojang Studios ani Microsoft / (c) 2026 Crystal Clicker">
-    Not affiliated with Mojang Studios or Microsoft / (c) 2026 Crystal Clicker
+  <div class="footer-legal">
+    <a href="#" onclick="openModal('tos'); return false;" data-en="Terms of Service" data-pl="Regulamin">Terms of Service</a>
+    <a href="#" onclick="openModal('privacy'); return false;" data-en="Privacy Policy" data-pl="Polityka Prywatności">Privacy Policy</a>
+    <a href="#" onclick="openModal('refund'); return false;" data-en="Refund Policy" data-pl="Polityka Zwrotów">Refund Policy</a>
   </div>
 </footer>
 
+<div class="modal-backdrop" id="modal-checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('checkout')" aria-label="Close">&times;</button>
+    <div class="modal-tag" data-en="Before you proceed" data-pl="Zanim przejdziesz dalej">Before you proceed</div>
+    <h2 class="modal-title" id="checkout-title" data-en="Review Terms of Service" data-pl="Przejrzyj Regulamin">Review Terms of Service</h2>
+    <div class="modal-body">
+      <div class="checkout-notice" data-en="Please read our <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;tos&quot;); return false;'>Terms of Service</a>, <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;privacy&quot;); return false;'>Privacy Policy</a>, and <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;refund&quot;); return false;'>Refund Policy</a> before purchasing. By proceeding you confirm that you have read and accepted all policies." data-pl="Prosimy o zapoznanie się z <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;tos&quot;); return false;'>Regulaminem</a>, <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;privacy&quot;); return false;'>Polityką Prywatności</a> oraz <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;refund&quot;); return false;'>Polityką Zwrotów</a> przed zakupem. Kontynuując, potwierdzasz, że przeczytałeś i akceptujesz wszystkie zasady.">
+        Please read our <a href="#" onclick="closeModal('checkout'); openModal('tos'); return false;">Terms of Service</a>,
+        <a href="#" onclick="closeModal('checkout'); openModal('privacy'); return false;">Privacy Policy</a>, and
+        <a href="#" onclick="closeModal('checkout'); openModal('refund'); return false;">Refund Policy</a> before purchasing.
+        By proceeding you confirm that you have read and accepted all policies.
+      </div>
+      <p data-en="Key points to be aware of:" data-pl="Kluczowe informacje:">Key points to be aware of:</p>
+      <p data-en="&#x2192; You must join our Discord server to receive and activate your license." data-pl="&#x2192; Musisz dołączyć do naszego serwera Discord, aby otrzymać i aktywować licencję.">&#x2192; You must join our Discord server to receive and activate your license.</p>
+      <p data-en="&#x2192; Due to the digital nature of this product, <strong>refunds are not available once an activation key has been generated.</strong>" data-pl="&#x2192; Ze względu na cyfrowy charakter produktu, <strong>zwroty nie są możliwe po wygenerowaniu klucza aktywacyjnego.</strong>">&#x2192; Due to the digital nature of this product, <strong>refunds are not available once an activation key has been generated.</strong></p>
+      <p data-en="&#x2192; Your HWID (Hardware ID) is collected for license binding purposes only." data-pl="&#x2192; Twój HWID (ID sprzętu) jest zbierany wyłącznie w celu przypisania licencji.">&#x2192; Your HWID (Hardware ID) is collected for license binding purposes only.</p>
+
+      <div class="checkout-tos-check">
+        <input type="checkbox" id="tos-agree" onchange="updateProceedBtn()">
+        <label for="tos-agree" data-en="I have read and agree to the <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;tos&quot;); return false;'>Terms of Service</a>, <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;privacy&quot;); return false;'>Privacy Policy</a>, and <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;refund&quot;); return false;'>Refund Policy</a>. I understand that refunds are not possible after key generation." data-pl="Przeczytałem i akceptuję <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;tos&quot;); return false;'>Regulamin</a>, <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;privacy&quot;); return false;'>Politykę Prywatności</a> i <a href='#' onclick='closeModal(&quot;checkout&quot;); openModal(&quot;refund&quot;); return false;'>Politykę Zwrotów</a>. Rozumiem, że zwroty nie są możliwe po wygenerowaniu klucza.">
+          I have read and agree to the
+          <a href="#" onclick="closeModal('checkout'); openModal('tos'); return false;">Terms of Service</a>,
+          <a href="#" onclick="closeModal('checkout'); openModal('privacy'); return false;">Privacy Policy</a>, and
+          <a href="#" onclick="closeModal('checkout'); openModal('refund'); return false;">Refund Policy</a>.
+          I understand that refunds are not possible after key generation.
+        </label>
+      </div>
+
+      <a id="proceed-btn-monthly" href="https://buy.stripe.com/YOUR_MONTHLY_STRIPE_LINK" target="_blank" rel="noopener" style="display:none;">
+        <button class="btn-proceed" id="proceed-btn" disabled data-en="Proceed to Checkout" data-pl="Przejdź do kasy">Proceed to Checkout</button>
+      </a>
+      <a id="proceed-btn-annual" href="https://buy.stripe.com/YOUR_ANNUAL_STRIPE_LINK" target="_blank" rel="noopener" style="display:none;">
+        <button class="btn-proceed" id="proceed-btn-2" disabled data-en="Proceed to Checkout" data-pl="Przejdź do kasy">Proceed to Checkout</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-tos" role="dialog" aria-modal="true" aria-labelledby="tos-title">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('tos')" aria-label="Close">&times;</button>
+    <div class="modal-tag" data-en="Legal" data-pl="Kwestie prawne">Legal</div>
+    <h2 class="modal-title" id="tos-title" data-en="Terms of Service" data-pl="Regulamin">Terms of Service</h2>
+    <div class="modal-body">
+      <p data-en="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Contact:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Last updated:</strong> April 20, 2026" data-pl="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Kontakt:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Ostatnia aktualizacja:</strong> 20 Kwietnia 2026"><strong>Administrator:</strong> Aleksander Jakubowski<br>
+      <strong>Contact:</strong> <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a><br>
+      <strong>Last updated:</strong> April 20, 2026</p>
+      
+      <p data-en="By purchasing a license for Crystal Clicker, you agree to these Terms of Service in their entirety. If you do not agree, do not proceed with the purchase." data-pl="Kupując licencję na Crystal Clicker, akceptujesz niniejszy Regulamin w całości. Jeśli nie wyrażasz zgody, nie kontynuuj zakupu.">By purchasing a license for Crystal Clicker, you agree to these Terms of Service in their entirety. If you do not agree, do not proceed with the purchase.</p>
+
+      <h3 data-en="2. License" data-pl="2. Licencja">2. License</h3>
+      <p data-en="Crystal Clicker licenses are issued as non-transferable, single-user digital licenses for the duration specified at purchase (30-day or 365-day). Redistribution, resale, or sharing of licenses is strictly prohibited." data-pl="Licencje Crystal Clicker są wydawane jako nieprzenoszalne, jednoosobowe licencje cyfrowe na czas określony przy zakupie (30 dni lub 365 dni). Dystrybucja, odsprzedaż lub udostępnianie licencji jest surowo zabronione.">Crystal Clicker licenses are issued as non-transferable, single-user digital licenses for the duration specified at purchase (30-day or 365-day). Redistribution, resale, or sharing of licenses is strictly prohibited.</p>
+
+      <h3 data-en="3. Discord Requirement" data-pl="3. Wymagany Discord">3. Discord Requirement</h3>
+      <p data-en="<strong>You must join the official Crystal Clicker Discord server (<a href='https://discord.gg/TqEZUDQ2tf' target='_blank' rel='noopener'>discord.gg/TqEZUDQ2tf</a>) in order to receive and activate your license.</strong> The license role is assigned automatically upon verified purchase. The activation key is generated via our Discord bot using a single command in the private member channel." data-pl="<strong>Musisz dołączyć do oficjalnego serwera Discord Crystal Clicker (<a href='https://discord.gg/TqEZUDQ2tf' target='_blank' rel='noopener'>discord.gg/TqEZUDQ2tf</a>), aby otrzymać i aktywować licencję.</strong> Rola z licencją jest przypisywana automatycznie po zweryfikowanym zakupie. Klucz aktywacyjny jest generowany przez naszego bota na Discordzie za pomocą pojedynczej komendy na prywatnym kanale."><strong>You must join the official Crystal Clicker Discord server (<a href="https://discord.gg/TqEZUDQ2tf" target="_blank" rel="noopener">discord.gg/TqEZUDQ2tf</a>) in order to receive and activate your license.</strong> The license role is assigned automatically upon verified purchase. The activation key is generated via our Discord bot using a single command in the private member channel.</p>
+      
+      <p data-en="If you experience any issues with role assignment, key generation, or software access, please open a support ticket in the Discord server or contact us at <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>." data-pl="Jeśli napotkasz jakiekolwiek problemy z przypisaniem roli, generowaniem klucza lub dostępem do oprogramowania, otwórz ticket na serwerze Discord lub skontaktuj się z nami pod adresem <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>.">If you experience any issues with role assignment, key generation, or software access, please open a support ticket in the Discord server or contact us at <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a>.</p>
+
+      <h3 data-en="4. Permitted Use" data-pl="4. Dozwolony użytek">4. Permitted Use</h3>
+      <p data-en="Crystal Clicker is an advanced input optimization and gaming workflow utility. You are responsible for ensuring that your use of the software complies with the terms of service of any platform, game, or service you use it with." data-pl="Crystal Clicker to zaawansowane narzędzie do optymalizacji inputu i workflow. Jesteś odpowiedzialny za upewnienie się, że korzystanie z oprogramowania jest zgodne z regulaminem platformy, gry lub usługi, z którą z niego korzystasz.">Crystal Clicker is an advanced input optimization and gaming workflow utility. You are responsible for ensuring that your use of the software complies with the terms of service of any platform, game, or service you use it with.</p>
+
+      <h3 data-en="5. Prohibited Use" data-pl="5. Zabroniony użytek">5. Prohibited Use</h3>
+      <p data-en="You may not reverse engineer, decompile, modify, or redistribute the software. You may not use the software in any manner that violates applicable laws or third-party terms of service where such violation would create legal liability for the administrator." data-pl="Nie możesz poddawać inżynierii wstecznej, dekompilować, modyfikować ani dystrybuować oprogramowania. Nie możesz używać oprogramowania w sposób naruszający obowiązujące prawo lub regulaminy stron trzecich, gdyby takie naruszenie rodziło odpowiedzialność prawną po stronie administratora.">You may not reverse engineer, decompile, modify, or redistribute the software. You may not use the software in any manner that violates applicable laws or third-party terms of service where such violation would create legal liability for the administrator.</p>
+
+      <h3 data-en="6. Availability & Updates" data-pl="6. Dostępność i aktualizacje">6. Availability & Updates</h3>
+      <p data-en="We reserve the right to modify, update, or discontinue the software at any time. Updates during an active license period are provided at no extra cost." data-pl="Zastrzegamy sobie prawo do modyfikacji, aktualizacji lub zaprzestania świadczenia oprogramowania w dowolnym momencie. Aktualizacje w trakcie aktywnego okresu licencji są udostępniane bez dodatkowych kosztów.">We reserve the right to modify, update, or discontinue the software at any time. Updates during an active license period are provided at no extra cost.</p>
+
+      <h3 data-en="7. Limitation of Liability" data-pl="7. Ograniczenie odpowiedzialności">7. Limitation of Liability</h3>
+      <p data-en="Crystal Clicker is provided &quot;as is&quot; without warranty of any kind. The administrator shall not be liable for any damages arising from the use or inability to use the software." data-pl="Crystal Clicker jest dostarczany &quot;tak jak jest&quot; bez jakiejkolwiek gwarancji. Administrator nie ponosi odpowiedzialności za jakiekolwiek szkody wynikające z użycia lub niemożności użycia oprogramowania.">Crystal Clicker is provided "as is" without warranty of any kind. The administrator shall not be liable for any damages arising from the use or inability to use the software.</p>
+
+      <h3 data-en="8. Contact" data-pl="8. Kontakt">8. Contact</h3>
+      <p data-en="For any questions, open a ticket on Discord or email <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>." data-pl="W przypadku jakichkolwiek pytań, otwórz ticket na Discordzie lub wyślij e-mail na adres <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>.">For any questions, open a ticket on Discord or email <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-privacy" role="dialog" aria-modal="true" aria-labelledby="pp-title">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('privacy')" aria-label="Close">&times;</button>
+    <div class="modal-tag" data-en="Legal" data-pl="Kwestie prawne">Legal</div>
+    <h2 class="modal-title" id="pp-title" data-en="Privacy Policy" data-pl="Polityka Prywatności">Privacy Policy</h2>
+    <div class="modal-body">
+      <p data-en="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Contact:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Last updated:</strong> April 20, 2026" data-pl="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Kontakt:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Ostatnia aktualizacja:</strong> 20 Kwietnia 2026"><strong>Administrator:</strong> Aleksander Jakubowski<br>
+      <strong>Contact:</strong> <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a><br>
+      <strong>Last updated:</strong> April 20, 2026</p>
+
+      <h3 data-en="1. Data We Collect" data-pl="1. Gromadzone dane">1. Data We Collect</h3>
+      <p data-en="Crystal Clicker collects <strong>minimal personal data</strong>. Specifically:" data-pl="Crystal Clicker gromadzi <strong>minimalne dane osobowe</strong>. W szczególności:">Crystal Clicker collects <strong>minimal personal data</strong>. Specifically:</p>
+      <p data-en="<strong>Discord Username</strong> — collected during the purchase and license delivery process solely to assign the correct license role and to link the purchase to your Discord account." data-pl="<strong>Nazwa użytkownika Discord</strong> — zbierana podczas zakupu w celu nadania odpowiedniej roli i powiązania zakupu z kontem."><strong>Discord Username</strong> — collected during the purchase and license delivery process solely to assign the correct license role and to link the purchase to your Discord account.</p>
+      <p data-en="<strong>HWID (Hardware ID)</strong> — your device's hardware identifier is collected by the Crystal Clicker client application for the sole purpose of binding your license to your machine and preventing unauthorized sharing. HWID data is stored securely and is not shared with third parties." data-pl="<strong>HWID (ID sprzętu)</strong> — zbierany wyłącznie w celu przypisania licencji do urządzenia i zapobiegania nieautoryzowanemu udostępnianiu. Dane HWID są bezpieczne i nie są udostępniane."><strong>HWID (Hardware ID)</strong> — your device's hardware identifier is collected by the Crystal Clicker client application for the sole purpose of binding your license to your machine and preventing unauthorized sharing. HWID data is stored securely and is not shared with third parties.</p>
+
+      <h3 data-en="2. Data We Do NOT Collect" data-pl="2. Dane, których NIE gromadzimy">2. Data We Do NOT Collect</h3>
+      <p data-en="Crystal Clicker does <strong>not</strong> collect, store, or process: real name, email address (beyond what Stripe processes for payment), physical address, gameplay data, or any behavioral analytics." data-pl="Crystal Clicker <strong>nie</strong> gromadzi: prawdziwych imion, adresów e-mail (poza Stripe), adresów fizycznych ani danych z rozgrywki.">Crystal Clicker does <strong>not</strong> collect, store, or process: real name, email address (beyond what Stripe processes for payment), physical address, gameplay data, or any behavioral analytics.</p>
+
+      <h3 data-en="3. Payment Processing" data-pl="3. Przetwarzanie płatności">3. Payment Processing</h3>
+      <p data-en="All payments are processed by <strong>Stripe</strong>. Crystal Clicker does not store or have access to your payment card details. Stripe's own privacy policy applies to payment data." data-pl="Wszystkie płatności przetwarza <strong>Stripe</strong>. Nie przechowujemy danych kart płatniczych.">All payments are processed by <strong>Stripe</strong>. Crystal Clicker does not store or have access to your payment card details. Stripe's own privacy policy applies to payment data.</p>
+
+      <h3 data-en="4. Data Retention" data-pl="4. Przechowywanie danych">4. Data Retention</h3>
+      <p data-en="Discord username and HWID data is retained for the duration of your active license. You may request deletion by contacting us at <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>." data-pl="Dane są przechowywane przez czas trwania aktywnej licencji. Możesz zażądać ich usunięcia kontaktując się z nami pod adresem <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>.">Discord username and HWID data is retained for the duration of your active license. You may request deletion by contacting us at <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a>.</p>
+
+      <h3 data-en="5. Third Parties" data-pl="5. Strony trzecie">5. Third Parties</h3>
+      <p data-en="Your data is not sold, rented, or shared with any third parties except as required for license delivery (Discord) and payment processing (Stripe)." data-pl="Twoje dane nie są sprzedawane ani udostępniane stronom trzecim, z wyjątkiem Discorda (dostarczenie licencji) i Stripe (płatności).">Your data is not sold, rented, or shared with any third parties except as required for license delivery (Discord) and payment processing (Stripe).</p>
+
+      <h3 data-en="6. Contact" data-pl="6. Kontakt">6. Contact</h3>
+      <p data-en="For privacy-related questions, contact <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>." data-pl="W przypadku pytań dotyczących prywatności, napisz na <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a>.">For privacy-related questions, contact <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-refund" role="dialog" aria-modal="true" aria-labelledby="refund-title">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('refund')" aria-label="Close">&times;</button>
+    <div class="modal-tag" data-en="Legal" data-pl="Kwestie prawne">Legal</div>
+    <h2 class="modal-title" id="refund-title" data-en="Refund Policy" data-pl="Polityka Zwrotów">Refund Policy</h2>
+    <div class="modal-body">
+      <p data-en="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Contact:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Last updated:</strong> April 20, 2026" data-pl="<strong>Administrator:</strong> Aleksander Jakubowski<br><strong>Kontakt:</strong> <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a><br><strong>Ostatnia aktualizacja:</strong> 20 Kwietnia 2026"><strong>Administrator:</strong> Aleksander Jakubowski<br>
+      <strong>Contact:</strong> <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a><br>
+      <strong>Last updated:</strong> April 20, 2026</p>
+
+      <h3 data-en="1. Digital Product — No Refund After Key Generation" data-pl="1. Produkt Cyfrowy — Brak zwrotów po wygenerowaniu klucza">1. Digital Product — No Refund After Key Generation</h3>
+      <p data-en="<strong>Due to the digital nature of Crystal Clicker licenses, refunds are not available once an activation key has been generated.</strong> By completing the purchase, you acknowledge and accept this policy." data-pl="<strong>Ze względu na cyfrowy charakter licencji Crystal Clicker, zwroty nie są możliwe po wygenerowaniu klucza aktywacyjnego.</strong> Dokonując zakupu, akceptujesz te warunki."><strong>Due to the digital nature of Crystal Clicker licenses, refunds are not available once an activation key has been generated.</strong> By completing the purchase, you acknowledge and accept this policy.</p>
+      <p data-en="The moment your license key is generated via the Discord bot, the digital product has been delivered and consumed. This is consistent with standard digital goods consumer rights exemptions (e.g., EU Directive 2011/83/EU, Art. 16(m))." data-pl="Z chwilą wygenerowania klucza przez bota na Discordzie, produkt cyfrowy uważa się za dostarczony.">The moment your license key is generated via the Discord bot, the digital product has been delivered and consumed. This is consistent with standard digital goods consumer rights exemptions (e.g., EU Directive 2011/83/EU, Art. 16(m)).</p>
+
+      <h3 data-en="2. Exceptions" data-pl="2. Wyjątki">2. Exceptions</h3>
+      <p data-en="A refund or replacement may be considered — at the sole discretion of the administrator — in the following circumstances:" data-pl="Zwrot lub wymiana mogą być rozpatrzone w przypadku:">A refund or replacement may be considered — at the sole discretion of the administrator — in the following circumstances:</p>
+      <p data-en="&#x2192; A technical fault on our side prevents delivery of the license entirely (e.g., the Discord bot fails to generate a key and support cannot resolve it within a reasonable timeframe)." data-pl="&#x2192; Błędu technicznego po naszej stronie uniemożliwiającego dostarczenie licencji.">&#x2192; A technical fault on our side prevents delivery of the license entirely (e.g., the Discord bot fails to generate a key and support cannot resolve it within a reasonable timeframe).</p>
+      <p data-en="&#x2192; A duplicate charge occurred due to a payment processing error." data-pl="&#x2192; Podwójnego obciążenia z powodu błędu płatności.">&#x2192; A duplicate charge occurred due to a payment processing error.</p>
+
+      <h3 data-en="3. How to Request Support" data-pl="3. Jak zgłosić problem">3. How to Request Support</h3>
+      <p data-en="If you believe you qualify for an exception, please:" data-pl="Jeśli uważasz, że kwalifikujesz się do wyjątku:">If you believe you qualify for an exception, please:</p>
+      <p data-en="1. Open a support ticket in the official Discord server: <a href='https://discord.gg/TqEZUDQ2tf' target='_blank' rel='noopener'>discord.gg/TqEZUDQ2tf</a>" data-pl="1. Otwórz ticket na oficjalnym serwerze Discord: <a href='https://discord.gg/TqEZUDQ2tf' target='_blank' rel='noopener'>discord.gg/TqEZUDQ2tf</a>">1. Open a support ticket in the official Discord server: <a href="https://discord.gg/TqEZUDQ2tf" target="_blank" rel="noopener">discord.gg/TqEZUDQ2tf</a></p>
+      <p data-en="2. Or email <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a> with your order details." data-pl="2. Lub wyślij e-mail na <a href='mailto:crystalclicker.contact.mail@gmail.com'>crystalclicker.contact.mail@gmail.com</a> z danymi zamówienia.">2. Or email <a href="mailto:crystalclicker.contact.mail@gmail.com">crystalclicker.contact.mail@gmail.com</a> with your order details.</p>
+
+      <h3 data-en="4. Chargebacks" data-pl="4. Obciążenia zwrotne (Chargeback)">4. Chargebacks</h3>
+      <p data-en="Initiating a chargeback without first contacting support will result in permanent license revocation and account termination across all Crystal Clicker services." data-pl="Rozpoczęcie procedury chargeback bez wcześniejszego kontaktu z pomocą techniczną skutkuje trwałym odebraniem licencji i blokadą konta.">Initiating a chargeback without first contacting support will result in permanent license revocation and account termination across all Crystal Clicker services.</p>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ───── PARTICLES ───── */
 const canvas = document.getElementById('particles');
 const ctx    = canvas.getContext('2d');
 let W, H;
-
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 resize();
 window.addEventListener('resize', resize);
 
 const COLORS = ['rgba(184,208,224,', 'rgba(255,255,255,', 'rgba(140,180,210,'];
-
 class Dot {
   constructor() { this.reset(true); }
   reset(init) {
-    this.x   = Math.random() * W;
-    this.y   = init ? Math.random() * H : H + 8;
-    this.r   = Math.random() * 1.1 + 0.2;
-    this.vy  = -(Math.random() * 0.25 + 0.05);
-    this.vx  = (Math.random() - 0.5) * 0.12;
-    this.a   = Math.random() * 0.35 + 0.05;
+    this.x = Math.random() * W;
+    this.y = init ? Math.random() * H : H + 8;
+    this.r = Math.random() * 1.1 + 0.2;
+    this.vy = -(Math.random() * 0.25 + 0.05);
+    this.vx = (Math.random() - 0.5) * 0.12;
+    this.a = Math.random() * 0.35 + 0.05;
     this.life = 0;
     this.max = Math.random() * 350 + 180;
     this.col = COLORS[Math.floor(Math.random() * COLORS.length)];
-    // occasionally render as a tiny diamond
     this.diamond = Math.random() < 0.12;
   }
   update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life++;
+    this.x += this.vx; this.y += this.vy; this.life++;
     if (this.life > this.max || this.y < -10) this.reset(false);
   }
   draw() {
     const fade = Math.min(this.life / 50, 1) * Math.min((this.max - this.life) / 50, 1);
     ctx.globalAlpha = this.a * fade;
-    ctx.fillStyle = this.col + (this.a * fade) + ')';
     if (this.diamond) {
       const s = this.r * 3.5;
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.life * 0.008);
+      ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.life * 0.008);
       ctx.beginPath();
-      ctx.moveTo(0, -s); ctx.lineTo(s * 0.6, 0);
-      ctx.lineTo(0, s);  ctx.lineTo(-s * 0.6, 0);
+      ctx.moveTo(0, -s); ctx.lineTo(s * .6, 0); ctx.lineTo(0, s); ctx.lineTo(-s * .6, 0);
       ctx.closePath();
-      ctx.fillStyle = this.col + (this.a * fade * 0.7) + ')';
-      ctx.fill();
-      ctx.restore();
+      ctx.fillStyle = this.col + (this.a * fade * .7) + ')'; ctx.fill(); ctx.restore();
     } else {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = this.col + (this.a * fade) + ')'; ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
 }
-
 const dots = Array.from({ length: 70 }, () => new Dot());
-
-function tick() {
-  ctx.clearRect(0, 0, W, H);
-  dots.forEach(d => { d.update(); d.draw(); });
-  requestAnimationFrame(tick);
-}
+function tick() { ctx.clearRect(0, 0, W, H); dots.forEach(d => { d.update(); d.draw(); }); requestAnimationFrame(tick); }
 tick();
 
-/* ───── LANGUAGE ───── */
 function setLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.lang = lang;
   document.querySelectorAll('.lang-btn').forEach(b =>
     b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang));
   document.querySelectorAll('[data-en]').forEach(el => {
     const val = el.getAttribute('data-' + lang);
     if (val != null) el.innerHTML = val;
   });
-  document.documentElement.lang = lang;
 }
 
-/* ───── SCROLL REVEAL ───── */
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  const modal = document.getElementById('modal-' + id);
+  if(modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+  if (id === 'checkout') {
+    const cb = document.getElementById('tos-agree');
+    if (cb) { cb.checked = false; updateProceedBtn(); }
+  }
+}
+
+document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) {
+      const id = backdrop.id.replace('modal-', '');
+      closeModal(id);
+    }
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-backdrop.open').forEach(m => {
+      const id = m.id.replace('modal-', '');
+      closeModal(id);
+    });
+  }
+});
+
+function openCheckout(type) {
+  document.getElementById('proceed-btn-monthly').style.display = type === 'monthly' ? 'block' : 'none';
+  document.getElementById('proceed-btn-annual').style.display  = type === 'annual'  ? 'block' : 'none';
+  const cb = document.getElementById('tos-agree');
+  if (cb) { cb.checked = false; updateProceedBtn(); }
+  openModal('checkout');
+}
+
+function updateProceedBtn() {
+  const checked = document.getElementById('tos-agree').checked;
+  document.querySelectorAll('.btn-proceed').forEach(btn => btn.disabled = !checked);
+}
+
 const io = new IntersectionObserver(entries =>
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
   { threshold: 0.08 });
 
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+document.querySelectorAll('.fcard').forEach((el, i) => { el.style.transitionDelay = (i * 0.07) + 's'; io.observe(el); });
+document.querySelectorAll('.step').forEach((el, i) => { el.style.transitionDelay = (i * 0.09) + 's'; io.observe(el); });
+document.querySelectorAll('.hv-item').forEach((el, i) => { el.style.transitionDelay = (i * 0.1) + 's'; io.observe(el); });
 
-// Feature cards staggered
-document.querySelectorAll('.fcard').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.07) + 's';
-  io.observe(el);
-});
-
-// Steps staggered
-document.querySelectorAll('.step').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.09) + 's';
-  io.observe(el);
-});
-
-// Howto side items staggered
-document.querySelectorAll('.hv-item').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.1) + 's';
-  io.observe(el);
+document.addEventListener('DOMContentLoaded', () => {
+  setLang('en');
 });
 </script>
 </body>
